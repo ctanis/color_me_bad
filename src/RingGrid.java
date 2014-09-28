@@ -6,9 +6,9 @@ import java.util.Random;
 
 public class RingGrid extends GameObject
 {
-    public static final float MIN_R = .5f;
-    public static final float MAX_R = 3.25f;
-    public static final float timethresh=250;
+    public static final float MIN_R = 50f;
+    public static final float MAX_R = 325f;
+    public static final float timethresh=200;
     public static Random rand = new Random();
     
 
@@ -97,8 +97,6 @@ public class RingGrid extends GameObject
         public void draw(float offsetAngle)
         {
 
-
-            
 
             if (solid)
             {
@@ -201,11 +199,6 @@ public class RingGrid extends GameObject
 
     public void draw()
     {
-
-        GL11.glDisable( GL11.GL_POLYGON_OFFSET_FILL );
-        GL11.glPolygonMode( GL11.GL_FRONT_AND_BACK, GL11.GL_LINE );
-        GL11.glColor3f(0f,0f,0f);
-
         for (int lev=0; lev<levels; lev++)
         {
             for (int c=0; c<width; c++)
@@ -246,22 +239,22 @@ public class RingGrid extends GameObject
         
         while (Keyboard.next())
         {
-            if ((Keyboard.getEventKey() == Keyboard.KEY_SPACE) &&
-                Keyboard.getEventKeyState()) // pressed
-            {
-                // add a propogating shape
-                int col = currColumn();
+            // if ((Keyboard.getEventKey() == Keyboard.KEY_SPACE) &&
+            //     Keyboard.getEventKeyState()) // pressed
+            // {
+            //     // add a propogating shape
+            //     int col = currColumn();
 
-                if (!grid[levels-1][col].isSolid()) 
-                {
-                    AudioManager.getInstance().play("shot");
-                    grid[levels-1][col].setColor( dispenser.nextColor() );
-                    grid[levels-1][col].toggle();
-                }
+            //     if (!grid[levels-1][col].isSolid()) 
+            //     {
+            //         AudioManager.getInstance().play("shot");
+            //         grid[levels-1][col].setColor( dispenser.nextColor() );
+            //         grid[levels-1][col].toggle();
+            //     }
                 
-            }
+            // }
 
-            if ((Keyboard.getEventKey() == Keyboard.KEY_Z) &&
+            if ((Keyboard.getEventKey() == Keyboard.KEY_SPACE) &&
                 Keyboard.getEventKeyState()) // pressed
             {
                 // zap col
@@ -294,7 +287,7 @@ public class RingGrid extends GameObject
 
         if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
         {
-            offsetAngle += .05;
+            offsetAngle += .1;
 //            System.out.println(offsetAngle);
             
 
@@ -303,7 +296,7 @@ public class RingGrid extends GameObject
 
         if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
         {
-            offsetAngle -= .05;
+            offsetAngle -= .1;
 //            System.out.println(offsetAngle);
         }
 
@@ -334,7 +327,8 @@ public class RingGrid extends GameObject
         if (time_accum > timethresh)
         {
             boolean playsound=false;
-            
+
+
             for (int c=0; c<width; c++)
             {
                 if (grid[0][c].isSolid())
@@ -373,12 +367,39 @@ public class RingGrid extends GameObject
                 }
             }
 
+
             if (playsound)
             {
                 // chirp
                 AudioManager.getInstance().play("beep");
 
             }
+
+
+            for (int c=0; c<width; c++)
+            {
+                boolean clear=true;
+
+                for (int l=0; l<levels; l++)
+                {
+                    if (grid[l][c].isSolid())
+                    {
+                        clear=false;
+                    }
+                }
+
+                if (clear)
+                {
+
+                    if (rand.nextInt(20) > 17)
+                    {
+                        grid[levels-1][c].setColor(dispenser.nextColor());
+                        grid[levels-1][c].toggle();
+                    }
+                }
+                
+            }
+
 
         }
 

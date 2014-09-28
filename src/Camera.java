@@ -50,64 +50,6 @@ public class Camera
     }
 
 
-    public void update(float delta_ms)
-    {
-        // if (Keyboard.isKeyDown(Keyboard.KEY_W))
-        // {
-        //     //z += .2;
-        //     radius -= .1;
-        // }
-        // if (Keyboard.isKeyDown(Keyboard.KEY_S))
-        // {
-        //     // z-=.2;
-        //     radius += .1;
-        // }
-        // if (Keyboard.isKeyDown(Keyboard.KEY_A))
-        // {
-        //     // x-=.2;
-        //     alpha +=1;
-        // }
-        // if (Keyboard.isKeyDown(Keyboard.KEY_D))
-        // {
-        //     // x+=.2;
-        //     alpha -=1;
-        // }
-
-
-        // if (Keyboard.isKeyDown(Keyboard.KEY_UP))
-        // {
-        //     if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-        //     {
-        //         y += .2;
-        //     }
-        //     else
-        //     {
-        //         vz += .2;
-        //     }            
-        // }
-        // if (Keyboard.isKeyDown(Keyboard.KEY_DOWN))
-        // {
-        //     if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
-        //     {
-        //         y -= .2;
-        //     }
-        //     else
-        //     {
-        //         vz-=.2;
-        //     }
-    
-        // }
-        // if (Keyboard.isKeyDown(Keyboard.KEY_LEFT))
-        // {
-        //     vx-=.2;
-        // }
-        // if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
-        // {
-        //     vx+=.2;
-        // }
-    }
-
-
 
     public void use()         // call before drawing
     {
@@ -129,5 +71,16 @@ public class Camera
         
 
     }
+
+    public void update(float delta_ms)
+    {
+        
+    }
+
+
+
+
+    
+
 }
 

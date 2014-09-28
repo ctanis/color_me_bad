@@ -43,11 +43,11 @@ public class Driver
         AudioManager.getInstance().loadSample("colflip", "res/ding.wav");
         AudioManager.getInstance().loadSample("ouch", "res/shot.wav");
 
-        // AudioManager.getInstance().loadSample("buzz", "res/gotcha.wav");
-        // AudioManager.getInstance().loadSample("victory", "res/hurray.wav");
+
+        java.util.Random rand = new java.util.Random();
 
 
-        Camera camera = new Camera(0, 0, 10, // eye position
+        Camera camera = new Camera(0, 0, 1000, // eye position
                                    0, 0, 0,       // look at
                                    .1f, 1000f,     // near/far
                                    45f, 1f*SCR_WIDTH/SCR_HEIGHT ); // fov, aspect ratio
@@ -55,37 +55,25 @@ public class Driver
 
         
         CellColor bgColor = new CellColor(1f,1f,1f);
-        
-
-        
-        ArrayList<Ring> levels = new ArrayList<>();
-
-        int count=10;
-
-        for (int i = 0; i<count; i++)
-        {
-            levels.add(new Ring(3, 0, 0, (3f/count)*(i+1), 0.02));
-        }
 
 
-        // Ring outer = new Ring(18, 0, 0, 3, 0.02);
-        // Ring inner = new Ring(18, 0, 0, .5, 0.02);
 
-
-        java.util.Random rand = new java.util.Random();
+        Score scoreState = new Score(bgColor);
+        scoreState.setGoal(rand.nextInt(3)+1);
 
         Dispenser dispenser = new Dispenser();
-        RingGrid world = new RingGrid(2 + rand.nextInt(12), 3 + rand.nextInt(13));
+
+        // RingGrid world = new RingGrid(10, 3 + rand.nextInt(5));
+        RingGrid world = new RingGrid(10, 3 + rand.nextInt(3));
+
         world.setClearColor(bgColor);
         world.setDispenser(dispenser);
         
 
-        
         long time = (Sys.getTime()*1000)/Sys.getTimerResolution(); // ms
 
-
+        boolean reset=false;
         
-
 
         while (! Display.isCloseRequested())
         {
@@ -95,29 +83,32 @@ public class Driver
             float delta_ms = time2-time;
             
 
-            if (Keyboard.isKeyDown(Keyboard.KEY_R))
+            if (Keyboard.isKeyDown(Keyboard.KEY_R) || reset)
             {
                 AudioManager.getInstance().play("colflip",
                                                 (float)(rand.nextFloat()/3+.2));
 
                 bgColor = new CellColor(1f,1f,1f);
 
+                scoreState = new Score(bgColor);
+                scoreState.setGoal(rand.nextInt(3)+1);
+
                 world.deactivate();
-                world = new RingGrid(2 + rand.nextInt(12), 3 + rand.nextInt(13));
+                // world = new RingGrid(5 + rand.nextInt(12), 3 + rand.nextInt(13));
+                world = new RingGrid(10, 3 + rand.nextInt(3));
                 world.setClearColor(bgColor);
                 world.setDispenser(dispenser);
             }
+            reset=false;
+            
 
 
-            // update
+            // // update
             camera.update(delta_ms);
             world.update(delta_ms);
             dispenser.update(delta_ms);
 
-            // for (Ring r : levels)
-            // {
-            //     r.update(delta_ms);
-            // }
+
             
             // clear
             GL11.glClearColor(bgColor.r, bgColor.g, bgColor.b, 1f);
@@ -126,29 +117,38 @@ public class Driver
             camera.use();
             
 
-            // // draw
-            // int c1=0;
-            // int c2=1;
-            // int c3=2;
-
-            // for (Ring r : levels)
-            // {
-                
-            //     GL11.glColor3f( (c1%5)*.201f, (c2%5)*.202f, (c3%5)*.203f );
-
-            //     c1++;
-            //     c2++;
-            //     c3++;
-                
-
-            //     r.draw();
-            // }
-
+            // draw
 
             world.draw();
             dispenser.draw();
+            scoreState.draw();
+
+
+            int st = scoreState.state();
+
+            if (st > 0)
+            {
+                System.out.println("you win!");
+                reset=true;
+            }
+            else if (st < 0)
+            {
+                System.out.println("you lose!");
+            }
+
+
+            
+            // GL11.glPolygonMode( GL11.GL_FRONT_AND_BACK, GL11.GL_FILL );
+            // GL11.glColor3f(0,0,0);
+            // GL11.glBegin(GL11.GL_QUADS);
+            // GL11.glVertex3f(0, 0, 0);
+            // GL11.glVertex3f(200, 0, 0);
+            // GL11.glVertex3f(200, 100, 0);
+            // GL11.glVertex3f(0, 100, 0);
+            // GL11.glEnd();
             
 
+            // end loop
             time=time2;
             Display.update();
             AudioManager.getInstance().update();
@@ -168,9 +168,9 @@ public class Driver
         Display.setVSyncEnabled(true);
         
         // enable 2D textures
-        // GL11.glEnable(GL11.GL_TEXTURE_2D);              
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
      
-        // set "clear" color to black
+        // set "clear" color to white
         GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);         
 
         // enable alpha blending
