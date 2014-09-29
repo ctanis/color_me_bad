@@ -7,14 +7,22 @@ public class Dispenser extends GameObject
     
     CellColor color;
     Random rand = new Random();
+    CellColor bgColor;
+    
     
 
-    public Dispenser()
+    public Dispenser(CellColor bgColor)
     {
+        this.bgColor = bgColor;
         nextColor();
     }
 
-    
+    public void setBgColor(CellColor bgColor)
+    {
+        this.bgColor = bgColor;
+    }
+
+
     public CellColor getColor()
     {
         return color;
@@ -32,10 +40,13 @@ public class Dispenser extends GameObject
 
         do
         {
-        color = new CellColor( rand.nextInt(2),
-                               rand.nextInt(2),
-                               rand.nextInt(2) );
-        } while (color.r + color.g + color.b == 0);
+            color = new CellColor( rand.nextInt(2),
+                                   rand.nextInt(2),
+                                   rand.nextInt(2) );
+        } while (color.r == bgColor.r &&
+                 color.g == bgColor.g  &&
+                 color.b == bgColor.b);
+        
         
         
         return tmp;

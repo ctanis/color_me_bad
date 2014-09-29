@@ -442,7 +442,9 @@ public class RingGrid extends GameObject
                 if (clear)
                 {
 
-                    if (rand.nextInt(20) > 17)
+                    int fract = (width+1)*3;
+                    
+                    if (rand.nextInt(fract) > fract-2)
                     {
                         grid[levels-1][c].setColor(dispenser.nextColor());
                         grid[levels-1][c].toggle();

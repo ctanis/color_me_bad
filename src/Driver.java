@@ -66,10 +66,10 @@ public class Driver
         Score scoreState = new Score(bgColor);
         scoreState.setGoal(rand.nextInt(3)+1);
 
-        Dispenser dispenser = new Dispenser();
+        Dispenser dispenser = new Dispenser(bgColor);
 
         // RingGrid world = new RingGrid(10, 3 + rand.nextInt(5));
-        RingGrid world = new RingGrid(10, 3 + rand.nextInt(3));
+        RingGrid world = new RingGrid(8+rand.nextInt(4), 3 + rand.nextInt(17));
 
         world.setClearColor(bgColor);
         world.setDispenser(dispenser);
@@ -95,13 +95,16 @@ public class Driver
                                                 (float)(rand.nextFloat()/3+.2));
 
                 bgColor = new CellColor(1f,1f,1f);
+                dispenser.setBgColor(bgColor);
+                
 
                 scoreState = new Score(bgColor);
                 scoreState.setGoal(rand.nextInt(3)+1);
 
                 world.deactivate();
                 // world = new RingGrid(5 + rand.nextInt(12), 3 + rand.nextInt(13));
-                world = new RingGrid(10, 3 + rand.nextInt(3));
+                world = new RingGrid(8+rand.nextInt(4), 3 + rand.nextInt(17));
+
                 world.setClearColor(bgColor);
                 world.setDispenser(dispenser);
             }

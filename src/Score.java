@@ -11,7 +11,7 @@ public class Score extends GameObject
     
     
     public static float WIN_THRESH = .8f;
-    public static float LOSE_THRESH = .2f;
+    public static float LOSE_THRESH = .4f;
     
 
 
@@ -27,6 +27,22 @@ public class Score extends GameObject
     public void setGoal(int goal)
     {
         target = goal;
+        
+        switch (target)
+        {
+         case 1:
+             Shot.color = new CellColor(1,0,0);
+             break;
+         case 2:
+             Shot.color = new CellColor(0,1,0);
+             break;
+         case 3:
+             Shot.color = new CellColor(0,0,1);
+             break;
+
+        }
+
+
     }
 
 

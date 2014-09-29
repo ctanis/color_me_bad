@@ -11,6 +11,8 @@ public class Shot extends GameObject
     private float to_x;
     private float to_y;
     private float time_accum;
+
+    public static  CellColor color;
     
 
     // shoot to 0,0
@@ -44,7 +46,8 @@ public class Shot extends GameObject
     public void draw()
     {
         GL11.glPolygonMode( GL11.GL_FRONT_AND_BACK, GL11.GL_FILL );
-        GL11.glColor3f( 1,0,0 );
+        GL11.glColor3f( color.r, color.g, color.b);
+        
 
         // System.out.println(from_x + " " + from_y  + " " + " - " + to_x + " " + to_y);
 
