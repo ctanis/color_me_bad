@@ -15,7 +15,6 @@ public class RingGrid extends GameObject
     private static CellColor WHITE =new CellColor(1f,1f,1f);
     
 
-
     public static class PolarQuad
     {
         float r1;
@@ -23,6 +22,8 @@ public class RingGrid extends GameObject
         float theta1;
         float theta2;
         boolean solid;
+        float lastAngle;
+        
 
         CellColor color;
         
@@ -97,13 +98,14 @@ public class RingGrid extends GameObject
         public void draw(float offsetAngle)
         {
 
+            lastAngle = offsetAngle;
+            
 
             if (solid)
             {
                 GL11.glPolygonMode( GL11.GL_FRONT_AND_BACK, GL11.GL_FILL );
                 GL11.glColor3f( color.r, color.g, color.b);
                 drawRaw(offsetAngle);
-                
             }
 
 
@@ -126,6 +128,44 @@ public class RingGrid extends GameObject
         public boolean isSolid()
         {
             return solid;
+        }
+
+
+        public Coord explode()
+        {
+            Coord newCoord =new Coord();
+
+            float x1 =  (float)(r1 * Math.cos(theta1 + lastAngle));
+            float y1 =  (float)(r1 * Math.sin(theta1 + lastAngle));
+
+            float x2 =  (float)(r2 *
+                                Math.cos(theta1 + lastAngle));
+
+            float y2 =  (float)(r2 *
+                                Math.sin(theta1 + lastAngle));
+
+
+            float x3 =  (float)(r2 *
+                                Math.cos(theta2 + lastAngle));
+
+            float y3 =  (float)(r2 *
+                                Math.sin(theta2 + lastAngle));
+
+
+            float x4 =  (float)(r1 *
+                                Math.cos(theta2 + lastAngle));
+            float y4 =  (float)(r1 *
+                                Math.sin(theta2 + lastAngle));
+
+
+            newCoord.x = .25f*(x1+x2+x3+x4);
+            newCoord.y = .25f*(y1+y2+y3+y4);
+
+            solid = false;
+
+            // Driver.tempItems.enqueue(new ExplodingQuad());
+
+            return newCoord;
         }
 
     }
@@ -261,15 +301,26 @@ public class RingGrid extends GameObject
                 AudioManager.getInstance().play("zap");
 
                 int col = currColumn();
+                boolean shotOne=false;
+                
 
                 for (int r=levels-1; r>=0; r--)
                 {
 
                     if (grid[r][col].isSolid())
                     {
-                        grid[r][col].toggle();
+
+                        shotOne = true;
+                        
+                        Driver.tempItems.add(new Shot(grid[r][col].explode()));
+
                         break;
                     }
+                }
+
+                if (! shotOne)
+                {
+                    Driver.tempItems.add(new Shot());
                 }
 
 

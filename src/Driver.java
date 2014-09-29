@@ -21,7 +21,8 @@ import org.newdawn.slick.Color;
 import java.io.IOException;
 import java.nio.FloatBuffer;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Iterator;
 
 
 
@@ -32,6 +33,8 @@ public class Driver
     public static final int SCR_WIDTH=1024;
     public static final int SCR_HEIGHT=768;
 
+    public static LinkedList<GameObject> tempItems;
+    
 
     public static void main(String[] args) throws LWJGLException, IOException
     {
@@ -43,6 +46,8 @@ public class Driver
         AudioManager.getInstance().loadSample("colflip", "res/ding.wav");
         AudioManager.getInstance().loadSample("ouch", "res/shot.wav");
 
+        tempItems = new LinkedList<GameObject>();
+        
 
         java.util.Random rand = new java.util.Random();
 
@@ -82,6 +87,7 @@ public class Driver
             long time2 = (Sys.getTime()*1000)/Sys.getTimerResolution(); // ms
             float delta_ms = time2-time;
             
+            
 
             if (Keyboard.isKeyDown(Keyboard.KEY_R) || reset)
             {
@@ -108,8 +114,31 @@ public class Driver
             world.update(delta_ms);
             dispenser.update(delta_ms);
 
+            for (GameObject obj : tempItems)
+            {
+                if (obj.isActive())
+                {
+                    obj.update(delta_ms);
+                }
+                
+            }
+
 
             
+            for (Iterator<GameObject> it = tempItems.iterator();
+                 it.hasNext(); )
+            {
+                GameObject obj = it.next();
+
+                if (! obj.isActive())
+                {
+                    it.remove();
+                }
+                
+            }
+
+
+
             // clear
             GL11.glClearColor(bgColor.r, bgColor.g, bgColor.b, 1f);
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -117,11 +146,18 @@ public class Driver
             camera.use();
             
 
+
             // draw
+
 
             world.draw();
             dispenser.draw();
             scoreState.draw();
+
+            for (GameObject obj : tempItems)
+            {
+                obj.draw();                
+            }
 
 
             int st = scoreState.state();
