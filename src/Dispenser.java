@@ -30,10 +30,14 @@ public class Dispenser extends GameObject
         //                        .1f+rand.nextInt(6)*.183f );
 
 
+        do
+        {
         color = new CellColor( rand.nextInt(2),
                                rand.nextInt(2),
                                rand.nextInt(2) );
-
+        } while (color.r + color.g + color.b == 0);
+        
+        
         return tmp;
     }
 

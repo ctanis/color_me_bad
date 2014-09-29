@@ -435,7 +435,7 @@ public class RingGrid extends GameObject
                 {
                     if (grid[l][c].isSolid())
                     {
-                        clear=false;
+//                        clear=false;
                     }
                 }
 

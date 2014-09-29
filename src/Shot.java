@@ -46,7 +46,7 @@ public class Shot extends GameObject
         GL11.glPolygonMode( GL11.GL_FRONT_AND_BACK, GL11.GL_FILL );
         GL11.glColor3f( 1,0,0 );
 
-        System.out.println(from_x + " " + from_y  + " " + " - " + to_x + " " + to_y);
+        // System.out.println(from_x + " " + from_y  + " " + " - " + to_x + " " + to_y);
 
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glVertex3f(from_x-2f, from_y, 0);
